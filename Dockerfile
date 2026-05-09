@@ -37,12 +37,12 @@ COPY . .
 # Move working directory to App since App.py uses relative paths (like './Logo/')
 WORKDIR /app/App
 
-# 10. Expose port 8080 (Cloud Run default)
-EXPOSE 8080
+# 10. Expose port 7860 (Hugging Face default)
+EXPOSE 7860
 
-# 11. Set the Streamlit config to run on 0.0.0.0:8080
+# 11. Set the Streamlit config to run on 0.0.0.0:7860
 CMD ["streamlit", "run", "App.py", \
-     "--server.port=8080", \
+     "--server.port=7860", \
      "--server.address=0.0.0.0", \
      "--server.headless=true", \
      "--browser.gatherUsageStats=false"]
