@@ -228,7 +228,7 @@ def run():
             g = geocoder.ip('me')
             if g and g.latlng:
                 latlong = g.latlng
-                geolocator = Nominatim(user_agent="http")
+                geolocator = Nominatim(user_agent="AI-Resume-Analyzer-Project")
                 location = geolocator.reverse(latlong, language='en')
                 if location and 'address' in location.raw:
                     address = location.raw['address']
