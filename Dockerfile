@@ -1,41 +1,56 @@
-# 1. Base image: python:3.9-slim (lightweight, GCP Cloud Run compatible)
+# 1. Base image: python:3.9-slim
 FROM python:3.9-slim
 
 # 9. Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# 2. Set working directory to /app
-WORKDIR /app
+# Hugging Face Spaces requires running as a non-root user (uid 1000)
+RUN useradd -m -u 1000 user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
+
+# 2. Set working directory
+WORKDIR $HOME/app
 
 # 3. Install system dependencies needed for compiling C-extensions
-# gcc and build-essential are required to build older versions of spacy, pyresparser, and pandas.
 RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# 4. Copy requirements.txt first (for Docker layer caching)
+# 4. Copy requirements.txt first
 COPY App/requirements.txt .
 
-# 5. Install all Python dependencies from requirements.txt
+# 5. Install all Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 6. Download spaCy English model
 RUN python -m spacy download en_core_web_sm
 
-# 7. Download ALL required NLTK data
-RUN python -c "import nltk; nltk.download('stopwords'); \
-nltk.download('punkt'); nltk.download('averaged_perceptron_tagger'); \
-nltk.download('universal_tagset'); nltk.download('maxent_ne_chunker'); \
-nltk.download('words')"
+# 7. Download ALL required NLTK data to a global location accessible by all users
+RUN mkdir -p /usr/local/share/nltk_data && chmod -R 777 /usr/local/share/nltk_data
+RUN python -c "import nltk; \
+    nltk.download('stopwords', download_dir='/usr/local/share/nltk_data'); \
+    nltk.download('punkt', download_dir='/usr/local/share/nltk_data'); \
+    nltk.download('averaged_perceptron_tagger', download_dir='/usr/local/share/nltk_data'); \
+    nltk.download('universal_tagset', download_dir='/usr/local/share/nltk_data'); \
+    nltk.download('maxent_ne_chunker', download_dir='/usr/local/share/nltk_data'); \
+    nltk.download('words', download_dir='/usr/local/share/nltk_data')"
 
 # 8. Copy the entire application code
 COPY . .
 
-# Move working directory to App since App.py uses relative paths (like './Logo/')
-WORKDIR /app/App
+# CRITICAL FIX FOR HUGGING FACE:
+# Give universal read/write permissions to the App directory so the app can create the SQLite DB and save uploaded resumes
+RUN chmod -R 777 $HOME/app
+
+# Switch to the Hugging Face user
+USER user
+
+# Move working directory to App
+WORKDIR $HOME/app/App
 
 # 10. Expose port 7860 (Hugging Face default)
 EXPOSE 7860
