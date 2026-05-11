@@ -213,19 +213,30 @@ def run():
         sec_token = secrets.token_urlsafe(12)
         host_name = socket.gethostname()
         ip_add = socket.gethostbyname(host_name)
-        dev_user = os.getlogin()
+        
+        # Safe way to get user name in a container
+        try:
+            dev_user = os.getlogin()
+        except:
+            dev_user = os.environ.get('USER', os.environ.get('USERNAME', 'cloud_user'))
+            
         os_name_ver = platform.system() + " " + platform.release()
-        g = geocoder.ip('me')
-        latlong = g.latlng
-        geolocator = Nominatim(user_agent="http")
-        location = geolocator.reverse(latlong, language='en')
-        address = location.raw['address']
-        cityy = address.get('city', '')
-        statee = address.get('state', '')
-        countryy = address.get('country', '')  
-        city = cityy
-        state = statee
-        country = countryy
+        
+        # Safety for geolocation
+        city, state, country, latlong = "NA", "NA", "NA", "NA"
+        try:
+            g = geocoder.ip('me')
+            if g and g.latlng:
+                latlong = g.latlng
+                geolocator = Nominatim(user_agent="http")
+                location = geolocator.reverse(latlong, language='en')
+                if location and 'address' in location.raw:
+                    address = location.raw['address']
+                    city = address.get('city', address.get('town', address.get('village', 'NA')))
+                    state = address.get('state', 'NA')
+                    country = address.get('country', 'NA')
+        except Exception as e:
+            log_warning(f"Geolocation failed: {e}")
 
 
         # Upload Resume
@@ -239,6 +250,7 @@ def run():
                 time.sleep(4)
         
             ### saving the uploaded resume to folder
+            os.makedirs('./Uploaded_Resumes', exist_ok=True)
             save_image_path = './Uploaded_Resumes/'+pdf_file.name
             pdf_name = pdf_file.name
             with open(save_image_path, "wb") as f:
