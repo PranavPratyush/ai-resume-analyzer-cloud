@@ -1,12 +1,4 @@
----
-title: AI Resume Analyzer
-emoji: 📄
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
----
+# AI Resume Analyzer
 
 <p><small>Best View in <a href="https://github.com/settings/appearance">Light Mode</a> and Desktop Site (Recommended)</small></p><br/>
 
@@ -15,6 +7,14 @@ pinned: false
 <div align="center">
   <h1>🌴 AI RESUME ANALYZER 🌴</h1>
   <p>A Tool for Resume Analysis, Predictions and Recommendations</p>
+  
+  <!-- Deployment Badge -->
+  <p>
+    <a href="#">
+      <img src="https://img.shields.io/badge/Deployment-Azure%20Container%20Apps-blue?style=for-the-badge&logo=microsoftazure" alt="Azure Deployment" />
+    </a>
+  </p>
+
   <!-- Badges -->
   <p>
     <img src="https://img.shields.io/github/last-commit/deepakpadhi986/AI-Resume-Analyzer" alt="last update" />
@@ -32,16 +32,18 @@ pinned: false
     <span> · </span>
     <a href="#setup--installation-">Installation</a>
     <span> · </span>
-    <a href="#">Project Documentation</a>
+    <a href="#cloud-deployment-architecture-">Cloud Deployment</a>
   </h4>
-  <p>
-    <small align="justify">
-      Built with 🤍 for Career Guidance
-     </small>
-  </p>
-  <small align="justify">🚀 Cloud Deployment of AI Resume Analyzer
-  </small>
 </div><br/><br/>
+
+## Cloud Deployment Architecture 🚀
+
+This project is deployed using a professional serverless cloud architecture on **Microsoft Azure**:
+
+- **Azure Container Apps**: Hosting the Streamlit application in a serverless environment (Auto-scaling).
+- **Azure Container Registry (ACR)**: Private registry for secure Docker image storage.
+- **GitHub Actions**: Fully automated CI/CD pipeline for building and deploying updates.
+- **Azure Monitor**: Centralized logging and health monitoring.
 
 ## About the Project 🥱
 <div align="center">

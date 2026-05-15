@@ -5,3 +5,12 @@ venv/
 *.db
 .env
 node_modules
+.github
+.vscode
+screenshots/
+Dockerfile
+docker-compose.yml
+deployment_summary.md
+viva_prep.md
+screenshots_checklist.md
+RESUME ANALYSER SYNOPSIS.pdf

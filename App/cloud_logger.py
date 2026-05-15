@@ -2,6 +2,7 @@ import logging
 import os
 
 # Initialize default standard logger
+# Azure Container Apps captures everything printed to stdout/stderr
 logger = logging.getLogger("ResumeAnalyzer")
 logger.setLevel(logging.INFO)
 
@@ -12,31 +13,15 @@ if not logger.handlers:
     console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)
 
-# Try setting up Google Cloud Logging if on GCP
-try:
-    from google.cloud import logging as cloud_logging
-    
-    # Authenticate and set up the Cloud Logging client
-    client = cloud_logging.Client()
-    
-    # Integrates the Cloud Logging handler with the standard Python logging module
-    client.setup_logging()
-    
-    logging.info("Google Cloud Logging successfully initialized.")
-except ImportError:
-    logger.warning("google-cloud-logging module not found. Falling back to local logging.")
-except Exception as e:
-    logger.warning(f"Failed to initialize Google Cloud Logging. Falling back to local logging. Note: {e}")
-
-# Helper functions
+# Helper functions for consistent logging across the app
 def log_info(message):
-    logging.info(message)
+    logger.info(message)
 
 def log_error(message, error=None):
     if error:
-        logging.error(f"{message} | Error: {str(error)}")
+        logger.error(f"{message} | Error: {str(error)}")
     else:
-        logging.error(message)
+        logger.error(message)
 
 def log_warning(message):
-    logging.warning(message)
+    logger.warning(message)
