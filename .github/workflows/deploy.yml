@@ -30,6 +30,7 @@ jobs:
 
       - name: Deploy to Container App
         run: |
+          az extension add --name containerapp --upgrade
           az containerapp create \
             --name resume-analyzer \
             --resource-group resume-rg-india \
