@@ -1,0 +1,31 @@
+graph TD
+    subgraph "Local Environment"
+        Dev[Developer] -- "git push" --> GitHub
+    end
+
+    subgraph "GitHub (DevOps)"
+        GitHub[GitHub Repository] -- "Trigger" --> GHA[GitHub Actions]
+        GHA -- "Build & Push" --> ACR
+    end
+
+    subgraph "Microsoft Azure (Cloud)"
+        ACR[Azure Container Registry] -- "Pull Image" --> ACA[Azure Container App]
+        
+        subgraph "Container Instance"
+            ACA -- "NLP Analysis" --> NLP[Spacy/NLTK]
+            ACA -- "Storage (Stateless)" --> DB[(SQLite DB)]
+            ACA -- "Logging" --> Monitor[Azure Monitor]
+        end
+        
+        ACA -- "HTTPS" --> User[End User Browser]
+    end
+
+    subgraph "External Monitoring"
+        ACA -- "Health Check" --> UR[UptimeRobot]
+    end
+
+    style ACA fill:#0078d4,color:#fff
+    style ACR fill:#0078d4,color:#fff
+    style Monitor fill:#0078d4,color:#fff
+    style GHA fill:#2088ff,color:#fff
+    style DB fill:#f2f2f2

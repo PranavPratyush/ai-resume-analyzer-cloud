@@ -16,28 +16,39 @@ The application is successfully deployed to **Microsoft Azure** using a serverle
 *   **Azure Monitor:** Integrated logging and application health tracking.
 *   **UptimeRobot:** External availability monitoring.
 
-## Architecture Diagram (ASCII)
-```text
-  [ Developer Laptop ]
-          │
-          │ (git push)
-          ▼
-    [ GitHub Repo ] ──────────┐
-          │                   │
-          │ (Triggers)        │ (Builds & Pushes)
-          ▼                   ▼
-  [ GitHub Actions ] ───▶ [ Azure Container Registry ]
-    (Tests & Logic)           (Stores Docker Image)
-          │                         │
-          │                         │ (Pulls Image)
-          ▼                         ▼
-  [ Azure Monitor ] ◀─── [ Azure Container App ]
-   (Logs & Health)           (Runs Streamlit App)
-                                    │
-                                    │ (Serves Web)
-                                    ▼
-                          [ End User Browser ]
-                             (Port 8000)
+## Architecture Diagram
+```mermaid
+graph TD
+    subgraph "Local Environment"
+        Dev[Developer] -- "git push" --> GitHub
+    end
+
+    subgraph "GitHub (DevOps)"
+        GitHub[GitHub Repository] -- "Trigger" --> GHA[GitHub Actions]
+        GHA -- "Build & Push" --> ACR
+    end
+
+    subgraph "Microsoft Azure (Cloud)"
+        ACR[Azure Container Registry] -- "Pull Image" --> ACA[Azure Container App]
+        
+        subgraph "Container Instance"
+            ACA -- "NLP Analysis" --> NLP[Spacy/NLTK]
+            ACA -- "Local Storage" --> DB[(SQLite DB)]
+            ACA -- "Monitoring" --> Monitor[Azure Monitor]
+        end
+        
+        ACA -- "HTTPS" --> User[End User Browser]
+    end
+
+    subgraph "External Monitoring"
+        ACA -- "Health Check" --> UR[UptimeRobot]
+    end
+
+    style ACA fill:#0078d4,color:#fff
+    style ACR fill:#0078d4,color:#fff
+    style Monitor fill:#0078d4,color:#fff
+    style GHA fill:#2088ff,color:#fff
+    style DB fill:#f2f2f2
 ```
 
 ## Deployment Process Summary
@@ -51,6 +62,12 @@ The application is successfully deployed to **Microsoft Azure** using a serverle
 *   **Registry Authentication:** Encounted "Unauthorized" errors when pulling images. **Solution:** Configured the Container App with registry credentials via GitHub Secrets to enable secure image retrieval.
 *   **Stateless Persistence:** Containers lose data on restart. **Solution:** Implemented a lightweight SQLite database for local persistence while documenting the roadmap for Azure SQL integration.
 *   **Port Mapping:** Adjusted Streamlit to listen on port 8000 to match Azure's default ingress expectations for internal routing.
+
+## Production Roadmap (Cloud Best Practices)
+To further align with "Acceptable Implementations" for enterprise cloud architectures:
+*   **Cloud Database:** Transition from SQLite to **Azure SQL Database** or **Cosmos DB** for managed, persistent, and scalable data storage.
+*   **Object Storage:** Migrate local resume storage (`./Uploaded_Resumes`) to **Azure Blob Storage** for durability and accessibility across multiple instances.
+*   **Enhanced Security:** Implement **Azure Key Vault** for secret management and **Azure Active Directory (RBAC)** for granular access control.
 
 ## Live Demo
 **Application URL:** [https://resume-analyzer.blacktree-92a6a33e.centralindia.azurecontainerapps.io/](https://resume-analyzer.blacktree-92a6a33e.centralindia.azurecontainerapps.io/)

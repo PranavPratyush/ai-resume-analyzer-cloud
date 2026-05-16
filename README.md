@@ -45,6 +45,9 @@ This project is deployed using a professional serverless cloud architecture on *
 - **GitHub Actions**: Fully automated CI/CD pipeline for building and deploying updates.
 - **Azure Monitor**: Centralized logging and health monitoring.
 
+> [!TIP]
+> For a detailed breakdown of the infrastructure, architecture diagrams, and deployment process, please refer to the **[Deployment Summary & Report](deployment_summary.md)**.
+
 ## About the Project 🥱
 <div align="center">
     <br/><img src="https://raw.githubusercontent.com/PranavPratyush/ai-resume-analyzer-cloud/main/screenshots/RESUME.png" alt="screenshot" /><br/><br/>
