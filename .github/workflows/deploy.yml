@@ -27,20 +27,13 @@ jobs:
 
       - name: Build and Push Image
         run: |
-          docker build -t resumeanalyzerpranav.azurecr.io/resume-analyzer:latest .
-          docker push resumeanalyzerpranav.azurecr.io/resume-analyzer:latest
+          docker build -t resumeanalyzerpranav.azurecr.io/resume-analyzer:${{ github.sha }} .
+          docker push resumeanalyzerpranav.azurecr.io/resume-analyzer:${{ github.sha }}
 
       - name: Deploy to Container App
         run: |
           az extension add --name containerapp --upgrade
-          az containerapp create \
+          az containerapp update \
             --name resume-analyzer \
             --resource-group resume-rg-india \
-            --environment resume-env \
-            --image resumeanalyzerpranav.azurecr.io/resume-analyzer:latest \
-            --target-port 8000 \
-            --ingress external \
-            --registry-server resumeanalyzerpranav.azurecr.io \
-            --registry-username ${{ secrets.ACR_USERNAME }} \
-            --registry-password ${{ secrets.ACR_PASSWORD }} \
-            --query properties.configuration.ingress.fqdn
+            --image resumeanalyzerpranav.azurecr.io/resume-analyzer:${{ github.sha }}
