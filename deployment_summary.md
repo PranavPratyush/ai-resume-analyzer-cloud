@@ -7,14 +7,14 @@
 **Developer:** Pranav Pratyush
 
 ## Cloud Infrastructure
-Originally planned for Google Cloud Platform (GCP), the application was successfully deployed to **Hugging Face Spaces** using a Docker-based serverless architecture. This pivot was made to utilize Hugging Face's free, high-performance container hosting environment which simplifies the deployment of ML-heavy applications.
+The application is successfully deployed to **Microsoft Azure** using a serverless container architecture. This professional cloud-native stack provides automatic scaling, secure image management, and integrated monitoring.
 
 ### Cloud Services Utilized:
-*   **Hugging Face Spaces:** Serverless container hosting platform.
-*   **GitHub Actions:** Automated CI/CD pipeline for testing and deployment.
-*   **Git LFS:** Managed storage for large binary assets (PDFs, images).
-*   **Hugging Face Hub:** Container registry and version control for the deployed app.
-*   **UptimeRobot:** External monitoring and availability tracking.
+*   **Azure Container Apps:** Serverless container hosting platform (Mumbai region).
+*   **Azure Container Registry (ACR):** Secure, private Docker image registry.
+*   **GitHub Actions:** Fully automated CI/CD pipeline for building and deployment.
+*   **Azure Monitor:** Integrated logging and application health tracking.
+*   **UptimeRobot:** External availability monitoring.
 
 ## Architecture Diagram (ASCII)
 ```text
@@ -24,28 +24,33 @@ Originally planned for Google Cloud Platform (GCP), the application was successf
           ▼
     [ GitHub Repo ] ──────────┐
           │                   │
-          │ (Triggers)        │ (Syncs)
+          │ (Triggers)        │ (Builds & Pushes)
           ▼                   ▼
-  [ GitHub Actions ] ───▶ [ Hugging Face Space ]
-    (Tests Code)              (Builds Docker)
+  [ GitHub Actions ] ───▶ [ Azure Container Registry ]
+    (Tests & Logic)           (Stores Docker Image)
           │                         │
-          │                         │ (Serves App)
-          │                         ▼
-          └───────────────▶ [ End User Browser ]
-                               (Port 7860)
+          │                         │ (Pulls Image)
+          ▼                         ▼
+  [ Azure Monitor ] ◀─── [ Azure Container App ]
+   (Logs & Health)           (Runs Streamlit App)
+                                    │
+                                    │ (Serves Web)
+                                    ▼
+                          [ End User Browser ]
+                             (Port 8000)
 ```
 
 ## Deployment Process Summary
-1.  **Containerization:** The application was wrapped in a production-ready Dockerfile using `python:3.9-slim`.
-2.  **Database Migration:** Migrated from a local MySQL instance to a serverless-friendly SQLite database (`resume_data.db`) to ensure statelessness.
-3.  **CI/CD Pipeline:** Configured GitHub Actions to automatically run basic sanity tests and sync the repository to the Hugging Face Space on every push to `main`.
-4.  **Asset Management:** Integrated Git LFS to handle resume samples and project screenshots that exceeded standard Git size limits.
-5.  **Environment Config:** Set up Hugging Face metadata (YAML frontmatter) to define the SDK (Docker) and application port (7860).
+1.  **Containerization:** The application is containerized using `python:3.9-slim` and optimized for Azure Container Apps.
+2.  **Database Migration:** Migrated from MySQL to a serverless-friendly SQLite database (`resume_data.db`) to ensure statelessness across container restarts.
+3.  **Secure Registry:** Set up Azure Container Registry (ACR) to securely host project images, decoupled from the hosting environment.
+4.  **CI/CD Pipeline:** Configured GitHub Actions to automatically build the Docker image, push it to ACR, and update the Container App on every push to `main`.
+5.  **Logging & Monitoring:** Integrated centralized logging via Azure Monitor to track user interactions and system health.
 
 ## Challenges Faced & Solutions
-*   **GCP Billing Constraints:** Encountered credit card verification issues with GCP. **Solution:** Migrated to Hugging Face Spaces which provides a similar container-based "Cloud Run" style experience for free.
-*   **Binary File Rejections:** Hugging Face rejected standard git pushes containing PDFs. **Solution:** Initialized Git LFS to track `.pdf`, `.png`, and `.jpg` files.
-*   **Port Mapping:** Standard Streamlit runs on 8501, but HF expects 7860. **Solution:** Modified the Dockerfile CMD to force Streamlit to listen on port 7860.
+*   **Registry Authentication:** Encounted "Unauthorized" errors when pulling images. **Solution:** Configured the Container App with registry credentials via GitHub Secrets to enable secure image retrieval.
+*   **Stateless Persistence:** Containers lose data on restart. **Solution:** Implemented a lightweight SQLite database for local persistence while documenting the roadmap for Azure SQL integration.
+*   **Port Mapping:** Adjusted Streamlit to listen on port 8000 to match Azure's default ingress expectations for internal routing.
 
 ## Live Demo
-**Application URL:** [https://huggingface.co/spaces/00pranav00/resume-analyze](https://huggingface.co/spaces/00pranav00/resume-analyze)
+**Application URL:** [https://resume-analyzer.resume-env.asia-south1.azurecontainerapps.io](https://resume-analyzer.resume-env.asia-south1.azurecontainerapps.io) (Placeholder - update after deployment)

@@ -38,4 +38,7 @@ jobs:
             --image resumeanalyzerpranav.azurecr.io/resume-analyzer:latest \
             --target-port 8000 \
             --ingress external \
+            --registry-server resumeanalyzerpranav.azurecr.io \
+            --registry-username ${{ secrets.ACR_USERNAME }} \
+            --registry-password ${{ secrets.ACR_PASSWORD }} \
             --query properties.configuration.ingress.fqdn
