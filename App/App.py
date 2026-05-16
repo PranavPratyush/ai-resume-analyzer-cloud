@@ -122,7 +122,7 @@ def insertf_data(feed_name,feed_email,feed_score,comments,Timestamp):
 
 st.set_page_config(
    page_title="AI Resume Analyzer",
-   page_icon='./Logo/recommend.png',
+   page_icon='📄',
 )
 
 
