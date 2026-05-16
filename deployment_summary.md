@@ -53,4 +53,4 @@ The application is successfully deployed to **Microsoft Azure** using a serverle
 *   **Port Mapping:** Adjusted Streamlit to listen on port 8000 to match Azure's default ingress expectations for internal routing.
 
 ## Live Demo
-**Application URL:** [https://resume-analyzer.resume-env.asia-south1.azurecontainerapps.io](https://resume-analyzer.resume-env.asia-south1.azurecontainerapps.io) (Placeholder - update after deployment)
+**Application URL:** [https://resume-analyzer.blacktree-92a6a33e.centralindia.azurecontainerapps.io/](https://resume-analyzer.blacktree-92a6a33e.centralindia.azurecontainerapps.io/)
