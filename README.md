@@ -10,7 +10,7 @@
   
   <!-- Deployment Badge -->
   <p>
-    <a href="#">
+    <a href="https://resume-analyzer.blacktree-92a6a33e.centralindia.azurecontainerapps.io/">
       <img src="https://img.shields.io/badge/Deployment-Azure%20Container%20Apps-blue?style=for-the-badge&logo=microsoftazure" alt="Azure Deployment" />
     </a>
   </p>
@@ -28,7 +28,7 @@
   
   <!--links-->
   <h4>
-    <a href="#preview-">View Demo</a>
+    <a href="https://resume-analyzer.blacktree-92a6a33e.centralindia.azurecontainerapps.io/">Live Web App Demo</a>
     <span> · </span>
     <a href="#setup--installation-">Installation</a>
     <span> · </span>
@@ -75,17 +75,16 @@ vi. To improve this tool by getting feedbacks
 <details>
   <summary>Frontend</summary>
   <ul>
-    <li><a href="https://streamlit.io/">Streamlit</a></li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML">HTML</a></li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS">CSS</a></li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript">JavaScript</a></li>
+    <li><a href="https://react.dev/">React.js</a> & <a href="https://vite.dev/">Vite</a></li>
+    <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML">HTML</a> & <a href="https://developer.mozilla.org/en-US/docs/Web/CSS">CSS</a></li>
   </ul>
 </details>
 
 <details>
   <summary>Backend</summary>
   <ul>
-    <li><a href="https://streamlit.io/">Streamlit</a></li>
+    <li><a href="https://flask.palletsprojects.com/">Flask</a></li>
     <li><a href="https://www.python.org/">Python</a></li>
   </ul>
 </details>
@@ -93,7 +92,7 @@ vi. To improve this tool by getting feedbacks
 <details>
 <summary>Database</summary>
   <ul>
-    <li><a href="https://www.mysql.com/">MySQL</a></li>
+    <li><a href="https://www.sqlite.org/">SQLite</a></li>
   </ul>
 </details>
 
