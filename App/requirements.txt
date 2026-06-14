@@ -12,3 +12,7 @@ spacy==2.3.5
 numpy<2.0.0
 google-cloud-logging==3.5.0
 altair<5
+Flask==2.2.3
+Flask-Cors==3.0.10
+gunicorn==20.1.0
+

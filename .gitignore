@@ -1,0 +1,13 @@
+App/__pycache__/
+App/resume_data.db
+App/Uploaded_Resumes/*
+!App/Uploaded_Resumes/.gitkeep
+frontend/node_modules/
+frontend/dist/
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+*.log
+checkout_log.txt

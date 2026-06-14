@@ -55,9 +55,5 @@ WORKDIR $HOME/app/App
 # 10. Expose port 8000 (Azure Target Port)
 EXPOSE 8000
 
-# 11. Run Streamlit on port 8000
-CMD ["streamlit", "run", "App.py", \
-     "--server.port=8000", \
-     "--server.address=0.0.0.0", \
-     "--server.headless=true", \
-     "--browser.gatherUsageStats=false"]
+# 11. Run Flask API via Gunicorn on port 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "server:app"]
